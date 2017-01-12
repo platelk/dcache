@@ -3,6 +3,10 @@ part of dcache;
 class SimpleCache<K, V> extends Cache<K, V> {
   Storage<K, V> _internalStorage;
 
+  SimpleCache() {
+    this._internalStorage = new SimpleStorage<K, V>();
+  }
+
   @override
   V _get(K key) {
     return this._internalStorage[key].value;
@@ -10,7 +14,7 @@ class SimpleCache<K, V> extends Cache<K, V> {
 
   @override
   SimpleCache _set(K key, V element) {
-    this._internalStorage[key] = new CacheEntry(key, element, null);
+    this._internalStorage[key] = new CacheEntry(key, element, new DateTime.now());
     return this;
   }
 

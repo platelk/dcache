@@ -28,6 +28,7 @@ class SimpleStorage<K, V> implements Storage<K, V> {
     this[key] = value;
     return this;
   }
+
   @override
   int get length => this._internalMap.length;
 }
