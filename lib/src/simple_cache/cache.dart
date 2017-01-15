@@ -4,7 +4,7 @@ class SimpleCache<K, V> extends Cache<K, V> {
   Storage<K, V> _internalStorage;
 
   SimpleCache(int size) {
-    this._internalStorage = new SimpleStorage(size: size);
+    this._internalStorage = new SimpleStorage<K, V>(size: size);
   }
 
   @override
@@ -14,7 +14,7 @@ class SimpleCache<K, V> extends Cache<K, V> {
 
   @override
   SimpleCache _set(K key, V element) {
-    this._internalStorage[key] = new CacheEntry(key, element, null);
+    this._internalStorage[key] = new CacheEntry(key, element, new DateTime.now());
     return this;
   }
 
