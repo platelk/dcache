@@ -26,7 +26,6 @@ abstract class Cache<K, V> {
 
   /// return the value at [key]
   dynamic operator [](K key) {
-    print("Lol");
     return this.get(key);
   }
 

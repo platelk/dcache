@@ -1,5 +1,7 @@
 library dcache;
 
+import 'dart:collection';
+
 // common
 part 'src/cache.dart';
 part 'src/storage.dart';

@@ -1,7 +1,13 @@
 part of dcache;
 
 class SimpleStorage<K, V> implements Storage<K, V> {
-  Map<K, CacheEntry<K, V>> _internalMap = {};
+  Map<K, CacheEntry<K, V>> _internalMap;
+  int _size;
+
+  SimpleStorage({int size}) {
+    this._size = size;
+    this._internalMap = new LinkedHashMap();
+  }
 
   @override
   CacheEntry<K, V> operator [](K key) {
@@ -10,6 +16,11 @@ class SimpleStorage<K, V> implements Storage<K, V> {
 
   @override
   void operator []=(K key, CacheEntry<K, V> value) {
+    // Remove the first key to respect the size, no time logic here.
+    // It's a wanted simple and not smart implementation
+    if (!this._internalMap.containsKey(key) && this._internalMap.length >= _size) {
+      this._internalMap.remove(this._internalMap.keys.first);
+    }
     this._internalMap[key] = value;
   }
 
@@ -28,6 +39,7 @@ class SimpleStorage<K, V> implements Storage<K, V> {
     this[key] = value;
     return this;
   }
+  
   @override
   int get length => this._internalMap.length;
 }
