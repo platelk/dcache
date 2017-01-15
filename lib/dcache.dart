@@ -1,6 +1,9 @@
 library dcache;
 
 import 'dart:collection';
+import 'dart:async';
+
+import 'package:meta/meta.dart';
 
 // common
 part 'src/cache.dart';

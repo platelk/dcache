@@ -3,5 +3,7 @@ version: 0.0.1
 author: Kevin PLATEL <platel.kevin@gmail.com>
 description: >
   Provide a simple to easy cache library usable on client and server side
+dependencies:
+  meta: any
 dev_dependencies:
   test: any

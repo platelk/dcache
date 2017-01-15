@@ -1,15 +1,14 @@
 part of dcache;
 
 class SimpleCache<K, V> extends Cache<K, V> {
-  Storage<K, V> _internalStorage;
 
   SimpleCache(int size) {
     this._internalStorage = new SimpleStorage<K, V>(size: size);
   }
 
   @override
-  V _get(K key) {
-    return this._internalStorage[key].value;
+  CacheEntry<K, V> _get(K key) {
+    return this._internalStorage[key];
   }
 
   @override

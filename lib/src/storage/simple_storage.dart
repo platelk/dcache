@@ -42,4 +42,10 @@ class SimpleStorage<K, V> implements Storage<K, V> {
 
   @override
   int get length => this._internalMap.length;
+
+
+  @override
+  bool containsKey(K key) {
+    return this._internalMap.containsKey(key);
+  }
 }
