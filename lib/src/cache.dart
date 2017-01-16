@@ -1,6 +1,6 @@
 part of dcache;
 
-typedef V LoaderFunc<K, V>(K key);
+typedef V LoaderFunc<K, V>(K key, V oldValue);
 
 class Cache<K, V> {
   Storage<K, V> _internalStorage;
@@ -9,39 +9,50 @@ class Cache<K, V> {
 
   /// Determine if the loading function in case of "refreshing", would be waited or not
   /// In some case we are more interested by the quick answer than a accurate one
-  bool _syncValueLoading;
+  bool _syncValueReloading;
 
   Cache({@required Storage<K, V> storage}) {
     this._internalStorage = storage;
+
+    this._syncValueReloading = true;
   }
 
   /// retun the element identify by [key]
   V get(K key) {
     // Note: I redo a null check here to avoid a O(n) iteration if the _loaderFunc is null
-    if (this._loaderFunc != null && !this._internalStorage.containsKey(key)) {
-      this._loadValue(key);
+    if ((this._loaderFunc != null && !this.containsKey(key)) ||
+        this._expiration == null) {
+      this._loadValue(new CacheEntry(key, null, null));
     }
 
     CacheEntry<K, V> entry = this._get(key);
+
     if (entry == null) {
       return null;
     }
+
     // Check if the value hasn't expired
-    if (this._expiration != null && entry.insertTime.difference(new DateTime.now()) >= this._expiration) {
-      if (_syncValueLoading) {
-        this._loadValue(key);
+    if (this._expiration != null &&
+        new DateTime.now().difference(entry.insertTime) >= this._expiration) {
+      if (_syncValueReloading) {
+        this._loadValue(entry);
+        entry = this._get(key);
       } else {
         // Non blocking
-        new Future(() => this._loadValue(key));
+        new Future(() => this._loadValue(entry));
       }
     }
-    return entry.value;
+
+    return entry?.value;
   }
 
   // Load a new value and insert in the cache
-  void _loadValue(K key) {
-    if (this._loaderFunc != null) {
-      this._set(key, this._loaderFunc(key));
+  void _loadValue(CacheEntry<K, V> entry) {
+    if (this._loaderFunc != null && !entry.updating) {
+      entry.updating = true;
+      // Prevent double calls
+      this._internalStorage.set(entry.key, entry);
+      this._set(entry.key, this._loaderFunc(entry.key, entry.value));
     }
   }
 
@@ -90,12 +101,17 @@ class Cache<K, V> {
   void set expiration(Duration duration) {
     this._expiration = duration;
   }
+
+  void set syncLoading(bool syncLoading) {
+    this._syncValueReloading = syncLoading;
+  }
 }
 
 class CacheEntry<K, V> {
   DateTime insertTime;
   K key;
   V value;
+  bool updating = false;
 
   CacheEntry(this.key, this.value, this.insertTime);
 }
