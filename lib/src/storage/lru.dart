@@ -1,6 +1,6 @@
 part of dcache;
 
-class SimpleStorage<K, V> implements Storage<K, V> {
+class LRU<K, V> implements Storage<K, V> {
   Map<K, CacheEntry<K, V>> _internalMap;
   int _size;
 
@@ -43,8 +43,7 @@ class SimpleStorage<K, V> implements Storage<K, V> {
   @override
   int get length => this._internalMap.length;
 
+
   @override
-  bool containsKey(K key) {
-    return this._internalMap.containsKey(key);
-  }
+  bool contains(K key) {}
 }
