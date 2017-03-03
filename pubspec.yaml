@@ -3,7 +3,10 @@ version: 0.0.1
 author: Kevin PLATEL <platel.kevin@gmail.com>
 description: >
   Provide a simple dart cache library usable on client and server side
+homepage: https://github.com/platelk/dcache
+environment:
+  sdk: ">=1.8.0 <2.0.0"
 dependencies:
-  meta: any
+  meta: '^1.0.4'
 dev_dependencies:
-  test: any
+  test: '^0.12.20+1'
