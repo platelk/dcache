@@ -2,7 +2,7 @@ part of dcache;
 
 typedef V LoaderFunc<K, V>(K key, V oldValue);
 
-class Cache<K, V> {
+abstract class Cache<K, V> {
   Storage<K, V> _internalStorage;
   LoaderFunc _loaderFunc;
   Duration _expiration;
@@ -20,9 +20,7 @@ class Cache<K, V> {
   /// retun the element identify by [key]
   V get(K key) {
     // Note: I redo a null check here to avoid a O(n) iteration if the _loaderFunc is null
-    if ((this._loaderFunc != null && !this.containsKey(key)) ||
-        this._expiration == null) {
-          print("Get value");
+    if (this._loaderFunc != null && !this.containsKey(key)) {
       this._loadValue(new CacheEntry(key, null, null));
     }
 
@@ -36,29 +34,25 @@ class Cache<K, V> {
     if (this._expiration != null &&
         new DateTime.now().difference(entry.insertTime) >= this._expiration) {
       if (_syncValueReloading) {
-          print("Reload sync value");
         this._loadValue(entry);
         entry = this._get(key);
       } else {
         // Non blocking
-          print("Reload async value");
         new Future(() => this._loadValue(entry));
       }
     }
 
+    entry?.use++;
+    entry?.lastUse = new DateTime.now();
     return entry?.value;
   }
 
   // Load a new value and insert in the cache
   void _loadValue(CacheEntry<K, V> entry) {
     if (this._loaderFunc != null && !entry.updating) {
-      print("Update");
       entry.updating = true;
       // Prevent double calls
-      this._internalStorage.set(entry.key, entry);
       this._set(entry.key, this._loaderFunc(entry.key, entry.value));
-    } else {
-      print("Rentry is updating !");
     }
   }
 
@@ -66,12 +60,12 @@ class Cache<K, V> {
   CacheEntry<K, V> _get(K key) => this._internalStorage[key];
 
   /// add [element] in the cache at [key]
-  Cache set(K key, V element) {
+  Cache<K, V> set(K key, V element) {
     return this._set(key, element);
   }
 
   /// internal [set]
-  Cache _set(K key, V element) {
+  Cache<K, V> _set(K key, V element) {
     this._internalStorage[key] =
         new CacheEntry(key, element, new DateTime.now());
     return this;
@@ -104,6 +98,8 @@ class Cache<K, V> {
     this._internalStorage = storage;
   }
 
+  Storage<K, V> get storage => this._internalStorage;
+
   void set expiration(Duration duration) {
     this._expiration = duration;
   }
@@ -111,13 +107,4 @@ class Cache<K, V> {
   void set syncLoading(bool syncLoading) {
     this._syncValueReloading = syncLoading;
   }
-}
-
-class CacheEntry<K, V> {
-  DateTime insertTime;
-  K key;
-  V value;
-  bool updating = false;
-
-  CacheEntry(this.key, this.value, this.insertTime);
 }
