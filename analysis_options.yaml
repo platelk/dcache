@@ -4,6 +4,8 @@ linter:
   rules:
     - always_declare_return_types
     - camel_case_types
+    - iterable_contains_unrelated_type
+    - hash_and_equals
     - empty_constructor_bodies
     - annotate_overrides
     - avoid_init_to_null
@@ -12,3 +14,6 @@ linter:
     - slash_for_doc_comments
     - sort_constructors_first
     - unnecessary_brace_in_string_interp
+    - list_remove_unrelated_type
+    - unrelated_type_equality_checks
+    - valid_regexps

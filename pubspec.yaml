@@ -1,5 +1,5 @@
 name: dcache
-version: 0.0.1
+version: 0.1.0
 author: Kevin PLATEL <platel.kevin@gmail.com>
 description: >
   Provide a simple dart cache library usable on client and server side
