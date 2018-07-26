@@ -17,8 +17,9 @@ void main() {
     expect(c.get("key"), equals(42));
   });
   test("Test simple loader function", () {
-    Cache<int, int> c = new SimpleCache<int, int>(
-        storage: new SimpleStorage(size: 20))..loader = (int k, _) => k * 10;
+    Cache<int, int> c =
+        new SimpleCache<int, int>(storage: new SimpleStorage(size: 20))
+          ..loader = (int k, _) => k * 10;
     expect(c.get(4), equals(40));
     expect(c.get(5), equals(50));
   });
@@ -62,7 +63,7 @@ void main() {
     Cache<int, int> c =
         new SimpleCache<int, int>(storage: new SimpleStorage(size: 3))
           ..loader = (int k, _) {
-            return k*10;
+            return k * 10;
           };
 
     expect(c.get(4), equals(40));
@@ -71,11 +72,11 @@ void main() {
     expect(c.get(7), equals(70));
     expect(c.containsKey(4), equals(false));
   });
-test("Test LRU eviction", () {
+  test("Test LRU eviction", () {
     Cache<int, int> c =
         new LruCache<int, int>(storage: new SimpleStorage(size: 3))
           ..loader = (int k, _) {
-            return k*10;
+            return k * 10;
           };
 
     expect(c.get(4), equals(40));
@@ -87,11 +88,11 @@ test("Test LRU eviction", () {
     expect(c.get(7), equals(70));
     expect(c.containsKey(5), equals(false));
   });
-test("Test LFU eviction", () {
+  test("Test LFU eviction", () {
     Cache<int, int> c =
         new LfuCache<int, int>(storage: new SimpleStorage(size: 3))
           ..loader = (int k, _) {
-            return k*10;
+            return k * 10;
           };
 
     expect(c.get(4), equals(40));
@@ -103,7 +104,4 @@ test("Test LFU eviction", () {
     print(c.storage.keys);
     expect(c.containsKey(5), equals(false));
   });
-
-
-
 }

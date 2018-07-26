@@ -53,7 +53,8 @@ class SimpleStorage<K, V> implements Storage<K, V> {
   List<K> get keys => this._internalMap.keys.toList(growable: true);
 
   @override
-  List<CacheEntry<K, V>> get values => this._internalMap.values.toList(growable: true);
+  List<CacheEntry<K, V>> get values =>
+      this._internalMap.values.toList(growable: true);
 
   @override
   int get capacity => this._size;

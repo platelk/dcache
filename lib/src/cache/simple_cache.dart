@@ -2,7 +2,7 @@ part of dcache;
 
 class SimpleCache<K, V> extends Cache<K, V> {
   SimpleCache({@required Storage<K, V> storage}) : super(storage: storage);
- 
+
   @override
   CacheEntry<K, V> _get(K key) {
     return this._internalStorage[key];
