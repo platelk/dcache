@@ -4,7 +4,7 @@ typedef V LoaderFunc<K, V>(K key, V oldValue);
 
 abstract class Cache<K, V> {
   Storage<K, V> _internalStorage;
-  LoaderFunc _loaderFunc;
+  LoaderFunc<K, V> _loaderFunc;
   Duration _expiration;
 
   /// Determine if the loading function in case of "refreshing", would be waited or not
