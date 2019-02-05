@@ -5,12 +5,12 @@ import 'package:dcache/dcache.dart';
 
 void main() {
   test("Test cache initialization", () {
-    Cache cache = new SimpleCache(storage: new SimpleStorage(size: 20));
+    Cache cache = new SimpleCache<int, int>(storage: new SimpleStorage(size: 20));
     expect(cache, isNotNull);
   });
   //
   test("Test simple insert/get", () {
-    Cache c = new SimpleCache(storage: new SimpleStorage(size: 20));
+    Cache c = new SimpleCache<String, int>(storage: new SimpleStorage(size: 20));
 
     c.set("key", 42);
     expect(c.get("key"), equals(42));

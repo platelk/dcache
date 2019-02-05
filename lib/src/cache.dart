@@ -90,21 +90,21 @@ abstract class Cache<K, V> {
   /// remove all the entry inside the cache
   void clear() => this._internalStorage.clear();
 
-  void set loader(LoaderFunc<K, V> loadFunc) {
+  set loader(LoaderFunc<K, V> loadFunc) {
     this._loaderFunc = loadFunc;
   }
 
-  void set storage(Storage<K, V> storage) {
+  set storage(Storage<K, V> storage) {
     this._internalStorage = storage;
   }
 
   Storage<K, V> get storage => this._internalStorage;
 
-  void set expiration(Duration duration) {
+  set expiration(Duration duration) {
     this._expiration = duration;
   }
 
-  void set syncLoading(bool syncLoading) {
+  set syncLoading(bool syncLoading) {
     this._syncValueReloading = syncLoading;
   }
 }
