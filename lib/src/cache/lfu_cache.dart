@@ -5,8 +5,7 @@ class LfuCache<K, V> extends SimpleCache<K, V> {
 
   @override
   LfuCache<K, V> _set(K key, V element) {
-    if (!this._internalStorage.containsKey(key) &&
-        this._internalStorage.length >= this._internalStorage.capacity) {
+    if (!this._internalStorage.containsKey(key) && this._internalStorage.length >= this._internalStorage.capacity) {
       // Sort by use time
       var values = this._internalStorage.values;
       values.sort((e1, e2) {
@@ -15,8 +14,7 @@ class LfuCache<K, V> extends SimpleCache<K, V> {
 
       this._internalStorage.remove(values.first.key);
     }
-    this._internalStorage[key] =
-        new CacheEntry(key, element, new DateTime.now());
+    this._internalStorage[key] = new CacheEntry(key, element, new DateTime.now());
     return this;
   }
 }

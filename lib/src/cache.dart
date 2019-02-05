@@ -17,7 +17,7 @@ abstract class Cache<K, V> {
     this._syncValueReloading = true;
   }
 
-  /// retun the element identify by [key]
+  /// return the element identify by [key]
   V get(K key) {
     // Note: I redo a null check here to avoid a O(n) iteration if the _loaderFunc is null
     if (this._loaderFunc != null && !this.containsKey(key)) {
@@ -31,8 +31,7 @@ abstract class Cache<K, V> {
     }
 
     // Check if the value hasn't expired
-    if (this._expiration != null &&
-        new DateTime.now().difference(entry.insertTime) >= this._expiration) {
+    if (this._expiration != null && new DateTime.now().difference(entry.insertTime) >= this._expiration) {
       if (_syncValueReloading) {
         this._loadValue(entry);
         entry = this._get(key);
@@ -66,8 +65,7 @@ abstract class Cache<K, V> {
 
   /// internal [set]
   Cache<K, V> _set(K key, V element) {
-    this._internalStorage[key] =
-        new CacheEntry(key, element, new DateTime.now());
+    this._internalStorage[key] = new CacheEntry(key, element, new DateTime.now());
     return this;
   }
 

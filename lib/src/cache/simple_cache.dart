@@ -1,5 +1,7 @@
 part of dcache;
 
+/// SimpleCache is a basic cache implementation without any particular logic
+/// than appending keys in the storage, and remove first inserted keys when storage is full
 class SimpleCache<K, V> extends Cache<K, V> {
   SimpleCache({@required Storage<K, V> storage}) : super(storage: storage);
 
