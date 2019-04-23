@@ -26,17 +26,16 @@ void main() {
     Cache<int, int> c =
         new SimpleCache<int, int>(storage: new SimpleStorage(size: 20))
           ..syncLoading = true
-          ..expiration = const Duration(seconds: 3)
+          ..expiration = const Duration(milliseconds: 200)
           ..loader = (int k, int oldValue) {
             oldValue ??= k;
             var v = oldValue * 10;
-            sleep(const Duration(seconds: 1));
             return v;
           };
 
     expect(c.get(4), equals(40));
     expect(c.get(4), equals(40));
-    sleep(const Duration(seconds: 3));
+    sleep(const Duration(seconds: 1));
 
     expect(c.get(4), equals(400));
   });
@@ -44,17 +43,16 @@ void main() {
     Cache<int, int> c =
         new SimpleCache<int, int>(storage: new SimpleStorage(size: 20))
           ..syncLoading = false
-          ..expiration = const Duration(seconds: 3)
+          ..expiration = const Duration(milliseconds: 200)
           ..loader = (int k, int oldValue) {
             oldValue ??= k;
             var v = oldValue * 10;
-            sleep(const Duration(seconds: 1));
             return v;
           };
 
     expect(c.get(4), equals(40));
     expect(c.get(4), equals(40));
-    sleep(const Duration(seconds: 3));
+    sleep(const Duration(seconds: 1));
 
     expect(c.get(4), equals(40));
   });
@@ -81,7 +79,6 @@ void main() {
     expect(c.get(4), equals(40));
     expect(c.get(5), equals(50));
     expect(c.get(6), equals(60));
-    sleep(const Duration(seconds: 1));
     expect(c.get(4), equals(40));
     expect(c.get(6), equals(60));
     expect(c.get(7), equals(70));
@@ -100,7 +97,6 @@ void main() {
     expect(c.get(4), equals(40));
     expect(c.get(6), equals(60));
     expect(c.get(7), equals(70));
-    print(c.storage.keys);
     expect(c.containsKey(5), equals(false));
   });
 }
