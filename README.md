@@ -8,6 +8,7 @@ Dcache is a simple library to implement application caching in `dart` inspired b
 * Support eviction
 * Automatically load cache if it doesn't exists. (Optional)
 * Async loading of expirate value
+* Callback for evicted items to perform cleanup (Optional)
 
 ## Example
 
@@ -25,6 +26,22 @@ void main() {
     print(c.get("unknown_key")); // nil
 }
 ```
+
+### Evict items
+
+```dart
+import 'package:dcache/dcache.dart';
+
+void main() {
+  Cache c = new SimpleCache(storage: new SimpleStorage(size: 20), onEvict: (key, value) {value.dispose();});
+
+    c.set("key", 42);
+    print(c.get("key")); // 42
+    print(c.containsKey("unknown_key")); // false
+    print(c.get("unknown_key")); // nil
+}
+```
+
 
 ### Loading function
 
