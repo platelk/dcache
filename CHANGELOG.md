@@ -1,3 +1,7 @@
+## 0.3.0
+
+* Add `OnEvit` option to catch eviction and do logic on it (thx to  [mikes222](https://github.com/mikes222))
+
 ## 0.2.1
 
 * Improve algorithm time to insertion
