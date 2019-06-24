@@ -1,14 +1,14 @@
 part of dcache;
 
 class CacheEntry<K, V> {
-  DateTime insertTime;
-  K key;
-  V value;
+  final DateTime insertTime;
+  final K key;
+  final V value;
   bool updating = false;
   DateTime lastUse;
   int use = 0;
 
-  CacheEntry(this.key, this.value, this.insertTime) {
+  CacheEntry(this.key, this.value) : insertTime = DateTime.now() {
     this.lastUse = this.insertTime;
   }
 

@@ -5,7 +5,8 @@ abstract class Storage<K, V> {
 
   Storage set(K key, CacheEntry<K, V> value);
 
-  void remove(K key);
+  /// removes the entry at position key. Returns the entry or null
+  CacheEntry<K, V> remove(K key);
 
   void clear();
 

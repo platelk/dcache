@@ -21,15 +21,12 @@ class SimpleCache<K, V> extends Cache<K, V> {
     // Remove the first key to respect the size, no time logic here.
     // It's a wanted simple and not smart implementation
     if (!this._internalStorage.containsKey(key) && this.length >= this._internalStorage.capacity) {
-      if (onEvict != null) {
-        CacheEntry<K, V> c = this._internalStorage.get(this._internalStorage.keys.first);
-        this._internalStorage.remove(this._internalStorage.keys.first);
+      CacheEntry<K, V> c = this._internalStorage.remove(this._internalStorage.keys.first);
+      if (c != null && onEvict != null) {
         onEvict(c.key, c.value);
-      } else {
-        this._internalStorage.remove(this._internalStorage.keys.first);
       }
     }
-    this._internalStorage[key] = new CacheEntry(key, element, new DateTime.now());
+    this._internalStorage[key] = new CacheEntry(key, element);
     return this;
   }
 

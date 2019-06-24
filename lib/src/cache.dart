@@ -21,7 +21,7 @@ abstract class Cache<K, V> {
   V get(K key) {
     // Note: I redo a null check here to avoid a O(n) iteration if the _loaderFunc is null
     if (this._loaderFunc != null && !this.containsKey(key)) {
-      this._loadValue(new CacheEntry(key, null, null));
+      this._loadValue(new CacheEntry(key, null));
     }
 
     CacheEntry<K, V> entry = this._get(key);
@@ -65,7 +65,7 @@ abstract class Cache<K, V> {
 
   /// internal [set]
   Cache<K, V> _set(K key, V element) {
-    this._internalStorage[key] = new CacheEntry(key, element, new DateTime.now());
+    this._internalStorage[key] = new CacheEntry(key, element);
     return this;
   }
 
@@ -104,5 +104,13 @@ abstract class Cache<K, V> {
 
   set syncLoading(bool syncLoading) {
     this._syncValueReloading = syncLoading;
+  }
+
+  V remove(K key) {
+    return _remove(key);
+  }
+
+  V _remove(K key) {
+    return _internalStorage.remove(key)?.value;
   }
 }

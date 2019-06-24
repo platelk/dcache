@@ -16,15 +16,12 @@ class LruCache<K, V> extends SimpleCache<K, V> {
         }
       }
 
-      if (onEvict != null) {
-        CacheEntry<K, V> c = this._internalStorage.get(min.key);
-        this._internalStorage.remove(min.key);
+      CacheEntry<K, V> c = this._internalStorage.remove(min.key);
+      if (c != null && onEvict != null) {
         onEvict(c.key, c.value);
-      } else {
-        this._internalStorage.remove(min.key);
       }
     }
-    this._internalStorage[key] = new CacheEntry(key, element, new DateTime.now());
+    this._internalStorage[key] = new CacheEntry(key, element);
     return this;
   }
 }
