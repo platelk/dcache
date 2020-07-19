@@ -1,5 +1,5 @@
 name: dcache
-version: 0.4.0
+version: 0.4.1
 author: Kevin PLATEL <platel.kevin@gmail.com>
 description: >
   Provide a simple dart cache library usable on web, flutter and server side
@@ -7,7 +7,7 @@ homepage: https://github.com/platelk/dcache
 environment:
   sdk: ">=2.0.0 <3.0.0"
 dependencies:
-  meta: '^1.2.2'
+  meta: '^1.1.8'
 dev_dependencies:
   test: '^1.15.3'
   pedantic: '^1.9.2'
