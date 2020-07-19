@@ -12,8 +12,6 @@ abstract class Storage<K, V> {
 
   int get length;
 
-  int get capacity;
-
   CacheEntry<K, V> operator [](K key);
 
   void operator []=(K key, CacheEntry<K, V> value);

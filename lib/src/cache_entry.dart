@@ -9,10 +9,10 @@ class CacheEntry<K, V> {
   int use = 0;
 
   CacheEntry(this.key, this.value) : insertTime = DateTime.now() {
-    this.lastUse = this.insertTime;
+    lastUse = insertTime;
   }
 
   void updateUseTime() {
-    this.lastUse = new DateTime.now();
+    lastUse = DateTime.now();
   }
 }

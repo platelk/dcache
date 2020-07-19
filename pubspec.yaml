@@ -7,7 +7,7 @@ homepage: https://github.com/platelk/dcache
 environment:
   sdk: ">=2.0.0 <3.0.0"
 dependencies:
-  meta: '^1.1.6'
+  meta: '^1.2.2'
 dev_dependencies:
-  test: '^1.5.1'
-  pedantic: '^1.4.0'
+  test: '^1.15.3'
+  pedantic: '^1.9.2'
