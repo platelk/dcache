@@ -1,5 +1,5 @@
 name: dcache
-version: 0.3.0
+version: 0.4.0
 author: Kevin PLATEL <platel.kevin@gmail.com>
 description: >
   Provide a simple dart cache library usable on web, flutter and server side
