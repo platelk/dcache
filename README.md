@@ -18,7 +18,7 @@ Dcache is a simple library to implement application caching in `dart` inspired b
 import 'package:dcache/dcache.dart';
 
 void main() {
-  Cache c = new SimpleCache(storage: new SimpleStorage(size: 20));
+  Cache c = new SimpleCache(storage: new SimpleStorage(20));
 
     c.set("key", 42);
     print(c.get("key")); // 42
@@ -33,7 +33,7 @@ void main() {
 import 'package:dcache/dcache.dart';
 
 void main() {
-  Cache c = new SimpleCache(storage: new SimpleStorage(size: 20), onEvict: (key, value) {value.dispose();});
+  Cache c = new SimpleCache(storage: new SimpleStorage(20), onEvict: (key, value) {value.dispose();});
 
     c.set("key", 42);
     print(c.get("key")); // 42
@@ -49,7 +49,7 @@ void main() {
 import 'package:dcache/dcache.dart';
 
 void main() {
-  Cache c = new SimpleCache<int, int>(storage: new SimpleStorage(size: 20))
+  Cache c = new SimpleCache<int, int>(storage: new SimpleStorage(20))
     ..loader = (key, oldValue) => key*10
   ;
 

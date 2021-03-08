@@ -1,7 +1,7 @@
 part of dcache;
 
 abstract class Storage<K, V> {
-  CacheEntry<K, V> get(K key);
+  CacheEntry<K, V>? get(K key);
 
   Storage set(K key, CacheEntry<K, V> value);
 
@@ -13,7 +13,7 @@ abstract class Storage<K, V> {
 
   int get capacity;
 
-  CacheEntry<K, V> operator [](K key);
+  CacheEntry<K, V>? operator [](K key);
 
   void operator []=(K key, CacheEntry<K, V> value);
 

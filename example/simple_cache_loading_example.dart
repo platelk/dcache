@@ -1,7 +1,7 @@
 import 'package:dcache/dcache.dart';
 
 void main() {
-  Cache c = new SimpleCache<int, int>(storage: new SimpleStorage(size: 20))..loader = (key, oldValue) => key * 10;
+  Cache c = new SimpleCache<int, int>(storage: new InMemoryStorage(20))..loader = (key, oldValue) => key * 10;
 
   print(c.get(4)); // 40
   print(c.get(5)); // 50

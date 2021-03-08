@@ -1,33 +1,30 @@
 part of dcache;
 
-class SimpleStorage<K, V> implements Storage<K, V> {
-  Map<K, CacheEntry<K, V>> _internalMap;
-  int _size;
+class InMemoryStorage<K, V> implements Storage<K, V> {
+  final Map<K, CacheEntry<K, V>> _internalMap;
+  final int _size;
 
-  SimpleStorage({@required int size}) {
-    this._size = size;
-    this._internalMap = new LinkedHashMap();
-  }
+  InMemoryStorage(int size): _size = size, _internalMap = {};
 
   @override
-  CacheEntry<K, V> operator [](K key) {
-    var ce = this._internalMap[key];
+  CacheEntry<K, V>? operator [](K key) {
+    var ce = _internalMap[key];
     return ce;
   }
 
   @override
   void operator []=(K key, CacheEntry<K, V> value) {
-    this._internalMap[key] = value;
+    _internalMap[key] = value;
   }
 
   @override
   void clear() {
-    this._internalMap.clear();
+    _internalMap.clear();
   }
 
   @override
-  CacheEntry<K, V> get(K key) {
-    return this[key];
+  CacheEntry<K, V>? get(K key) {
+    return _internalMap[key];
   }
 
   @override
@@ -38,24 +35,24 @@ class SimpleStorage<K, V> implements Storage<K, V> {
 
   @override
   void remove(K key) {
-    this._internalMap.remove(key);
+    _internalMap.remove(key);
   }
 
   @override
-  int get length => this._internalMap.length;
+  int get length => _internalMap.length;
 
   @override
   bool containsKey(K key) {
-    return this._internalMap.containsKey(key);
+    return _internalMap.containsKey(key);
   }
 
   @override
-  List<K> get keys => this._internalMap.keys.toList(growable: true);
+  List<K> get keys => _internalMap.keys.toList(growable: true);
 
   @override
   List<CacheEntry<K, V>> get values =>
-      this._internalMap.values.toList(growable: true);
+      _internalMap.values.toList(growable: true);
 
   @override
-  int get capacity => this._size;
+  int get capacity => _size;
 }
