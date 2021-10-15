@@ -15,13 +15,16 @@ abstract class Cache<K, V> {
   /// In some case we are more interested by the quick answer than a accurate one
   bool _syncValueReloading;
 
-  Cache(Storage<K, V> storage, {this.onEvict}) : _internalStorage = storage,  _syncValueReloading = true;
+  Cache(Storage<K, V> storage, {this.onEvict})
+      : _internalStorage = storage,
+        _syncValueReloading = true;
 
   /// return the element identify by [key]
   V? get(K key) {
     if (_loaderFunc != null && !containsKey(key)) {
       if (_internalStorage.length >= _internalStorage.capacity) {
-        var garbage = _collectGarbage(_internalStorage.length - _internalStorage.capacity + 1);
+        var garbage = _collectGarbage(
+            _internalStorage.length - _internalStorage.capacity + 1);
         if (onEvict != null) {
           for (var e in garbage) {
             onEvict!(e.key, e.value);
@@ -39,7 +42,8 @@ abstract class Cache<K, V> {
     }
 
     // Check if the value hasn't expired
-    if (_expiration != null && DateTime.now().difference(entry.insertTime) >= _expiration!) {
+    if (_expiration != null &&
+        DateTime.now().difference(entry.insertTime) >= _expiration!) {
       if (_syncValueReloading) {
         _loadValue(entry);
         entry = _get(key);
