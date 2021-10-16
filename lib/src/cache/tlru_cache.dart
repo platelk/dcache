@@ -4,11 +4,10 @@ class TlruCache<K, V> extends SimpleCache<K, V> {
   TlruCache(
       {required Storage<K, V> storage,
       OnEvict<K, V>? onEvict,
-      Duration? expiry})
-      : _expiry = expiry ?? Duration.zero,
-        super(storage: storage, onEvict: onEvict);
-
-  final Duration _expiry;
+      Duration? expiration})
+      : super(storage: storage, onEvict: onEvict) {
+    _expiration = expiration ?? Duration.zero;
+  }
 
   @override
   LoaderFunc<K, V>? _loaderFunc;
@@ -23,19 +22,17 @@ class TlruCache<K, V> extends SimpleCache<K, V> {
 
   /// internal [set]
   @override
-  Cache<K, V> _set(K key, FutureOr<V> element, {Duration? expiry}) {
+  Cache<K, V> _set(K key, FutureOr<V> element) {
     TlruCacheEntry<K, V> entry;
     if (element is Future<V>) {
-      entry =
-          TlruCacheEntry<K, V>(key, null, DateTime.now(), expiry ?? _expiry);
+      entry = TlruCacheEntry<K, V>(key, null, DateTime.now(), _expiration!);
       entry.updating = true;
       element.then((e) {
         entry.updating = false;
         entry.value = e;
       });
     } else {
-      entry =
-          TlruCacheEntry<K, V>(key, element, DateTime.now(), expiry ?? _expiry);
+      entry = TlruCacheEntry<K, V>(key, element, DateTime.now(), _expiration!);
     }
     _internalStorage[key] = entry;
     return this;

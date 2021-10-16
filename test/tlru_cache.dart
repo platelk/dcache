@@ -15,7 +15,7 @@ void main() {
     intervalCounter = 0;
     cache = TlruCache<int, String>(
       storage: TlruStorage(2),
-      expiry: expiry,
+      expiration: expiry,
       onEvict: (key, value) {
         expect(value, equals(intervalCounter > 0 ? 'a' : 'b'));
 
