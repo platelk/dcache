@@ -2,51 +2,50 @@ import 'package:test/test.dart';
 import 'package:dcache/dcache.dart';
 
 void main() {
-  late TlruCache cache;
-  final expiry = Duration(seconds: 1, milliseconds: 500);
-  final interval = Duration(milliseconds: 500);
-  late int intervalCounter;
-  final pause = () async {
-    await Future<void>.delayed(interval);
-    intervalCounter++;
-  };
+  const expiry = Duration(seconds: 1, milliseconds: 500);
+  const interval = Duration(milliseconds: 500);
+  const halfInterval = Duration(milliseconds: 250);
+  const evictionOrder = ['b', 'a'];
+
+  late TlruCache<int, String> cache;
+  final pause = ({Duration? delay}) => Future<void>.delayed(delay ?? interval);
+  var evictionCounter = 0;
 
   setUp(() {
-    intervalCounter = 0;
     cache = TlruCache<int, String>(
-      storage: TlruStorage(2),
+      storage: TlruStorage(3),
       expiration: expiry,
       onEvict: (key, value) {
-        expect(value, equals(intervalCounter > 0 ? 'a' : 'b'));
+        expect(value, equals(evictionOrder[evictionCounter++]));
 
-        print('$intervalCounter | evicting {$value}');
+        print('evicting {$value}');
       },
     )..loader = (k, _) {
         final s = String.fromCharCode('a'.codeUnitAt(0) + k);
-        print('$intervalCounter | loading {$s}');
+        print('loading {$s}');
         return s;
       };
   });
 
-  test('Evicts the expired entries first', () async {
-    cache.get(0);
-    await pause();
-    cache.get(1);
-    await pause();
-    cache.get(0);
-    await pause();
-
-    // Evict 'a' (most recently used) because it is exipred.
-    cache.get(2);
-  });
-
-  test('Evicts the least recently used entry, if no expired entry is present',
-      () {
+  test('Evicts expired and least recently used entries; in that order',
+      () async {
     cache.get(0);
     cache.get(1);
-    cache.get(0);
+    await pause(delay: halfInterval);
 
-    // Evict 'b' (least recently used).
     cache.get(2);
+    cache.get(0);
+    cache.get(3); // Evict 'b' (least recently used).
+    await pause();
+
+    cache.get(2);
+    cache.get(3);
+    cache.get(0);
+    await pause();
+
+    cache.get(3);
+    await pause(delay: halfInterval);
+
+    cache.get(4); // Evict 'a' (expired).
   });
 }
