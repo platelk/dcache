@@ -4,7 +4,9 @@ class InMemoryStorage<K, V> implements Storage<K, V> {
   final Map<K, CacheEntry<K, V>> _internalMap;
   final int _size;
 
-  InMemoryStorage(int size): _size = size, _internalMap = {};
+  InMemoryStorage(int size)
+      : _size = size,
+        _internalMap = {};
 
   @override
   CacheEntry<K, V>? operator [](K key) {
